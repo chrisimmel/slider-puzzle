@@ -1,0 +1,68 @@
+
+circle {
+    opacity: 0;
+}
+
+svg.tile circle {
+    /*opacity: 0.5;*/
+    opacity: 1;
+    /*fill: #aaa;*/
+    /*fill: #d11;*/
+}
+
+svg.tile.canMove circle {
+    /*fill: #ccc;*/
+    /*fill: rgb(70, 132, 204);*/
+    cursor: pointer;
+    /*transition: fill 400ms;*/
+    transition: opacity 400ms;
+}
+svg.tile.canMove text {
+    cursor: pointer;
+}
+svg.tile.canMove:hover circle,
+svg.tile.canMove.solved:hover circle {
+    /*fill: #ddd;*/
+    /*fill: #66d;*/
+    opacity: 0.8;
+}
+svg.board.solved svg.tile.solved circle,
+svg.board.solved svg.tile.canMove.solved circle {
+    fill: rgb(0, 160, 0);
+}
+svg.tile.solved circle,
+svg.tile.canMove.solved circle {
+    /*fill: rgb(120, 180, 120);*/
+    fill: rgb(0, 160, 0);
+}
+
+svg.tile text {
+    /*fill: #888;*/
+    fill: #111;
+    font-family: serif;
+    text-anchor: middle;
+}
+svg.solved svg.tile text:hover {
+    fill: #eee;
+}
+
+div.controls {
+    width: 200px;
+    float: left;
+    font: 14px sans-serif;
+}
+
+button {
+    margin: 10px;
+    width: 100px;
+    height: 24px;
+}
+button:hover {
+    background: #ddd;
+}
+
+label {
+    clear: both;
+    display: block;
+    margin-top: 20px;
+}

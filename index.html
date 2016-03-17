@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html class="cki-slide">
+<meta charset="utf-8">
+<title>Chris's Sliding Puzzle</title>
+
+<link rel="stylesheet" type="text/css" href="slider.css">
+
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+<body>
+<div class="controls">
+    <button onClick="resetBoard();">New</button>
+    <button onClick="showHint();">Hint</button>
+    <button onClick="solveBoard();">Solve</button>
+    
+    <label for="width">Width</label>
+    <input type="range" min="2" max="12" id="width">
+
+    <label for="difficulty">Difficulty</label>
+    <input type="range" min="2" max="150" id="difficulty">
+</div>
+<div class="boardFrame">
+    <svg class="board"></svg>
+</div>
+</body>
+
+<footer>
+  <aside>March 12, 2016</aside>
+  <a href="../" rel="author">Chris Immel</a>
+</footer>
+
+<script type="text/javascript" src="slider.js"></script>
+
+<script type="text/javascript">
+     window.onload = function() {
+              initControls();
+              initBoard();
+              resetBoard();
+            };
+</script>
+</html>
