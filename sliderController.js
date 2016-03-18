@@ -65,6 +65,7 @@ BoardController.resetBoard = function() {
 
     BoardController.reportThinking();
 
+    // TODO: Free up foreground UI thread by doing the board layout generation in a WebWorker.
     setTimeout(function() {
         BoardModel.state = new BoardState(BoardController.width);
         BoardModel.state = BoardModel.state.smartShuffle(BoardController.difficulty);
@@ -156,7 +157,7 @@ BoardController.userMoveTile = function(index) {
             .html("Congratulations!");
         
         results.append("p")
-            .html("You completed the puzzle in <span>" + BoardModel.userStepCount + ((BoardModel.userStepCount > 1) ? " steps." : " step."));
+            .html("You completed the puzzle in <span>" + BoardModel.userStepCount + ((BoardModel.userStepCount > 1) ? "</span> steps." : " step."));
     }
 }
 
