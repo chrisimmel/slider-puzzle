@@ -99,7 +99,7 @@ BoardView.renderState = function(state, delay) {
         .attr("y", textOffsetY)
         .attr("font-size", fontSize);
 
-    // Update the class and attributes af all text elements (new and existing).
+    // Update the class and attributes af all tiles (new and existing).
     cellAll.classed("tile", function(d) { return !!d.id; })
         .classed("canMove", function(d) { return d.canMove; })
         .classed("solved", function(d, i) { return d.id == i + 1; })
@@ -110,7 +110,7 @@ BoardView.renderState = function(state, delay) {
         .attr("data-i", function (d, i) { return i; })
         .attr("data-d", function (d, i) { return d.dist; });
 
-    // Remove obsolete elements (as when reducing board size).
+    // Remove obsolete elements (such as when reducing board size).
     cellAll.exit().remove();
 
     if (state.isSolved()) {

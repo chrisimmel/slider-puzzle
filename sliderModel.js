@@ -323,7 +323,7 @@ BoardState.prototype.equals = function(state2) {
 /**
  * BoardState.isSolved()
  *
- * Determines whether this is the "solved" board state, that is the state in which each
+ * Determines whether this is the "solved" board state, that is, the state in which each
  * tile is in its home position.
  */
 BoardState.prototype.isSolved = function() {
@@ -514,7 +514,7 @@ BoardState.prototype.smartShuffle= function(difficulty) {
 
     // Process candidates as long was we have some...
     while (candidates.length) {
-        // A simple pop would pull off the best candidate...
+        // A simple pop would pull off the very best candidate, but would always produce the same results...
         //var candidateState = candidates.pop();
 
         // ...but we want this to be slightly randomized.  Pick a random candidate from among the best few...
@@ -535,7 +535,7 @@ BoardState.prototype.smartShuffle= function(difficulty) {
             var nextSig = next.signature();
 
             if (!visitedStates[nextSig]) {
-                // If we haven't already visited this state, check if it is a solution.
+                // If we haven't already visited this state, check if it is an acceptable layout.
 
                 // Record the fact that we've visited this state, also recording its prior state.                    
                 visitedStates[nextSig] = candidateState;
@@ -556,7 +556,7 @@ BoardState.prototype.smartShuffle= function(difficulty) {
 	                var shuffleSteps = [];
 	                while (next && next != "start") {
 	                    shuffleSteps.push(next);
-	                    next = next._priorState; //visitedStates[next.signature()];
+	                    next = next._priorState;
 	                }
 
 	                // Log the path and some statistics...
@@ -573,6 +573,8 @@ BoardState.prototype.smartShuffle= function(difficulty) {
                     // If not a satisfactory state, add it to the queue to be considered later.
                     console.log("Adding to candidates: " + nextSig);
                     //candidates.push(next);
+                    // Insert the candidate in the proper location, ordered with the best
+                    // candidates (that is, the ones farthest from the solution) at the end.
                     binaryInsert(next, candidates, function(c) { return c.getDistanceFromSolution(); });
                     numCandidates++;
 
@@ -587,7 +589,8 @@ BoardState.prototype.smartShuffle= function(difficulty) {
 	    }
     }
 
-    // The search space has been exhausted without finding a solution.
+    // The search space has been exhausted without finding an acceptable layout.
+    // Propose the best candidate seen up to now (which is usually good enough).
     console.log("Exhausted search space.");
     return bestSoFar || this;
 };
@@ -597,7 +600,7 @@ BoardState.prototype.smartShuffle= function(difficulty) {
  * BoardState.findSolution
  *
  * Uses an A* search to look for a solution to the given starting state.
- * Warning:  This can take a long time for a complex layout and a large board.
+ * Warning:  This can take a long time (minutes) for a complex layout and a large board.
  */
 BoardState.findSolution = function(startingState) {
     // An associative array (hash map) recording which states have been visited, and the prior state of each.
@@ -643,6 +646,7 @@ BoardState.findSolution = function(startingState) {
         // breadth-first search (and a lot slower).)
         var candidateState = candidates.splice(minIndex, 1)[0];
 */
+        // The candidates are already ordered.  Take the best one.
         var candidateState = candidates.pop();
 
         // The candidate signature can be used as a hash of the state, or as a simple visualization.
@@ -699,9 +703,11 @@ BoardState.findSolution = function(startingState) {
 	                return solution;
 	            }
                 else {
-                    // If not a solution, add this state to the queue to be considered later.
+                    // If not a solution, add this state to the list to be considered later.
                     console.log("Adding to candidates: " + nextSig);
                     //candidates.push(next);
+                    // Insert the candidate in the proper location, ordered with the best
+                    // candidates (that is, the ones closest to the solution) at the end.
                     binaryInsert(next, candidates, function(c) { return -c.getDistanceFromSolution(); });
                     numCandidates++;
 	            }

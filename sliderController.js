@@ -141,12 +141,13 @@ BoardController.solveBoard = function() {
             BoardView.renderState(BoardModel.state, 50);
 
             setTimeout(function() {
-                 // Solve the next step in 40ms.
+                 // Show the next step in 40ms.
                  solveRestOfBoard();
             }, 40);
         }
     }
 
+    // Show the first step in the solution, which kicks off the timer chain.
     solveRestOfBoard();
 }
 
