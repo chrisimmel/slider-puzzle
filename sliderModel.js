@@ -595,6 +595,31 @@ BoardState.prototype.smartShuffle= function(difficulty) {
     return bestSoFar || this;
 };
 
+/**
+ * BoardState.computeCanMove()
+ *
+ * Recomputes the canMove property of all tiles.  This is necessary because we _reuse_
+ * the same tiles in all states throughout the solution/shuffle chain, so when we move
+ * to a new state, we need to recompute things that may have changed.
+ */
+BoardState.prototype.computeCanMove = function() {
+    var moveables = this.getNeighbors(this._emptyLoc);
+
+    // Unset moveable property on all tiles.
+    for (var i = 0; i < this._tiles.length; i++) {
+        if (this._tiles[i]) {
+            this._tiles[i].canMove = false;
+        }
+    }
+
+    // Set the moveable property on the select few in the list.
+    for (var i = 0; i < moveables.length; i++) {
+        var tile = this._tiles[moveables[i]];
+        if (tile) {
+            tile.canMove = true;
+        }
+    }
+}
 
 /**
  * BoardState.findSolution

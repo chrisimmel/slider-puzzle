@@ -84,6 +84,7 @@ BoardController.resetBoard = function() {
         
         // Shuffle the board to the desired level of difficulty.
         BoardModel.state = BoardModel.state.smartShuffle(BoardController.difficulty);
+        BoardModel.state.computeCanMove();
         BoardModel.state.dump();
 
         // Reset the user step count.
@@ -145,6 +146,9 @@ BoardController.solveBoard = function() {
                  solveRestOfBoard();
             }, 40);
         }
+        else {
+            BoardModel.state.computeCanMove();
+        }
     }
 
     // Show the first step in the solution, which kicks off the timer chain.
@@ -168,6 +172,7 @@ BoardController.userMoveTile = function(index) {
 
     // Set and render the new state.
     BoardModel.state = newState;
+    BoardModel.state.computeCanMove();
     BoardModel.state.dump();
     BoardView.renderState( BoardModel.state, 200);
 
