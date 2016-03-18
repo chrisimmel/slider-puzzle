@@ -18,8 +18,9 @@ BoardController.width = 4;
 /**
  * BoardController.difficulty
  *
- * The number of rows or columns of the board.  The board is always square,
- * so the width and height are the same.
+ * The desired difficulty of the initial board layout.  This is measured as the sum
+ * of the Manhattan distance of each tile from its home position, but users don't
+ * need to know that!
  */
 BoardController.difficulty = 45;
 
@@ -29,27 +30,37 @@ BoardController.difficulty = 45;
  */
 BoardController.initControls = function() {
     d3.select("#width").on("change", function() {
-        BoardController.width = this.value;
-        d3.select("#widthValue").html(BoardController.width);
-        BoardController.resetBoard();
+            BoardController.width = this.value;
+            d3.select("#widthValue").html(BoardController.width);
+            BoardController.resetBoard();
         })
         .attr("value", BoardController.width);
     d3.select("#widthValue").html(BoardController.width);
 
     d3.select("#difficulty").on("change", function() {
-        BoardController.difficulty = this.value;
-        d3.select("#difficultyValue").html(BoardController.difficulty);
-        BoardController.resetBoard();
+            BoardController.difficulty = this.value;
+            d3.select("#difficultyValue").html(BoardController.difficulty);
+            BoardController.resetBoard();
         })
         .attr("value", BoardController.difficulty);
     d3.select("#difficultyValue").html(BoardController.difficulty);
 }
 
 
+/**
+ * BoardController.reportThinking()
+ *
+ * Activates the GIF spinner.
+ */
 BoardController.reportThinking = function() {
     d3.select(".controls").classed("thinking", true);
 }
 
+/**
+ * BoardController.reportNotThinking()
+ *
+ * Hides the GIF spinner.
+ */
 BoardController.reportNotThinking = function() {
     d3.select(".controls").classed("thinking", false);
 }
@@ -63,20 +74,28 @@ BoardController.reportNotThinking = function() {
  */
 BoardController.resetBoard = function() {
 
+    // Activate the GIF spinner.
     BoardController.reportThinking();
 
     // TODO: Free up foreground UI thread by doing the board layout generation in a WebWorker.
     setTimeout(function() {
+        // Create a new board of the correct size in a solved state.
         BoardModel.state = new BoardState(BoardController.width);
+        
+        // Shuffle the board to the desired level of difficulty.
         BoardModel.state = BoardModel.state.smartShuffle(BoardController.difficulty);
         BoardModel.state.dump();
 
+        // Reset the user step count.
         BoardModel.userStepCount = 0;
 
+        // Render the new, shuffled state.
         BoardView.renderState(BoardModel.state, 400);
 
+        // Hide the GIF spinner.
         BoardController.reportNotThinking();
 
+        // Remove the congratulations message from last game.
         d3.select("#results").selectAll("p").remove();
     }, 20);
 
@@ -94,9 +113,11 @@ BoardController.showHint = function() {
     if (nextState) {
         var saveState = BoardModel.state;
         BoardModel.state = nextState;
+        // Temporarily render the next step in the known solution.
         BoardView.renderState(BoardModel.state);
         
         setTimeout(function() {
+             // Restore the prior state.
              BoardModel.state = saveState;
              BoardView.renderState(BoardModel.state);
         }, 200);
@@ -144,13 +165,16 @@ BoardController.userMoveTile = function(index) {
         newState = BoardModel.state._priorState;
     }
 
+    // Set and render the new state.
     BoardModel.state = newState;
     BoardModel.state.dump();
-    BoardView.renderState( BoardModel.state);
+    BoardView.renderState( BoardModel.state, 200);
 
+    // Increment the user step count.
     BoardModel.userStepCount++;
 
     if (BoardModel.state.isSolved()) {
+        // If the game is over, congratulate the user and present the number of steps taken.
         var results = d3.select("#results");
         
         results.append("p")

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html class="cki-slide">
+<head>
 <meta charset="utf-8">
 <title>Chris's Sliding Puzzle</title>
 
 <link rel="stylesheet" type="text/css" href="slider.css">
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+</head>
 
 <body>
 <div class="controls">
@@ -16,11 +19,11 @@
     <div class="sliders">
         <label for="width">Width</label>
         <div class="paramValue" id="widthValue"></div>
-        <input type="range" min="2" max="12" id="width"/>
+        <input type="range" min="2" max="12" value="4" id="width"/>
 
         <label for="difficulty">Difficulty</label>
         <div class="paramValue" id="difficultyValue"></div>
-        <input type="range" min="2" max="150" id="difficulty"/>
+        <input type="range" min="2" max="150" value="45" id="difficulty"/>
     </div>
 
     <div class="spinner thinking"></div>
