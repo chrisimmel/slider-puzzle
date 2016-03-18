@@ -2,7 +2,7 @@
 /*
  * Class BoardView
  * 
- * The slider puzzle board view, singleton.
+ * The slider puzzle board view, a singleton.
  *
  */
 function BoardView() {}
@@ -33,39 +33,6 @@ BoardView.initBoard = function() {
         .attr("height", BoardView.boardHeight);
 }
 
-/**
- * Initializes the user controls.
- */
-BoardView.initControls = function() {
-    d3.select("#width").on("change", function() {
-        BoardController.width = this.value;
-        BoardView.updateSizes();
-        BoardController.resetBoard();
-        })
-        .attr("value", width);
-
-    d3.select("#difficulty").on("change", function() {
-        BoardController.difficulty = this.value;
-        BoardView.updateSizes();
-        BoardController.resetBoard();
-        })
-        .attr("value", difficulty);
-}
-
-/**
- * Updates the sizes of displayed elements.
- */
-BoardView.updateSizes = function() {
-    var cellWidth = BoardView.boardWidth / BoardModel.state._width;
-
-    BoardView.board.selectAll("text")
-        .attr("x", cellWidth / 2)
-        .attr("y", cellWidth / 2 + 13);
-
-    BoardView.board.selectAll("rect")
-        .attr("width", cellWidth - 1)
-        .attr("height", cellWidth - 1);
-}
 
 /**
  * Renders the given state, with a given transition delay.
@@ -99,7 +66,6 @@ BoardView.renderState = function(state, delay) {
     var color = d3.scale.linear()
         .domain([1, (state._width - 1) * 2])
         .range([d3.rgb(120, 180, 120), d3.rgb(221, 17, 17)])
-        //.range(["green", "red"])
         .clamp(true);
 
     // Add the circle element in each tile.

@@ -9,33 +9,50 @@
 
 <body>
 <div class="controls">
-    <button onClick="resetBoard();">New</button>
-    <button onClick="showHint();">Hint</button>
-    <button onClick="solveBoard();">Solve</button>
+    <button onClick="BoardController.resetBoard();">New</button>
+    <button onClick="BoardController.showHint();">Hint</button>
+    <button onClick="BoardController.solveBoard();">Solve</button>
     
-    <label for="width">Width</label>
-    <input type="range" min="2" max="12" id="width">
+    <div class="sliders">
+        <label for="width">Width</label>
+        <div class="paramValue" id="widthValue"></div>
+        <input type="range" min="2" max="12" id="width"/>
 
-    <label for="difficulty">Difficulty</label>
-    <input type="range" min="2" max="150" id="difficulty">
+        <label for="difficulty">Difficulty</label>
+        <div class="paramValue" id="difficultyValue"></div>
+        <input type="range" min="2" max="150" id="difficulty"/>
+    </div>
+
+    <div class="spinner thinking"></div>
 </div>
+
 <div class="boardFrame">
     <svg class="board"></svg>
 </div>
-</body>
 
+<div class="results" id="results">
+
+</div>
+
+<!--
 <footer>
-  <aside>March 12, 2016</aside>
+  <aside>March 18, 2016</aside>
   <a href="../" rel="author">Chris Immel</a>
 </footer>
+-->
 
-<script type="text/javascript" src="slider.js"></script>
+</body>
+
+<script type="text/javascript" src="sliderModel.js"></script>
+<script type="text/javascript" src="sliderView.js"></script>
+<script type="text/javascript" src="sliderController.js"></script>
+<script type="text/javascript" src="tools.js"></script>
 
 <script type="text/javascript">
      window.onload = function() {
-              initControls();
-              initBoard();
-              resetBoard();
+              BoardController.initControls();
+              BoardView.initBoard();
+              BoardController.resetBoard();
             };
 </script>
 </html>

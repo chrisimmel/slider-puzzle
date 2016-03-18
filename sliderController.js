@@ -2,7 +2,7 @@
 /*
  * Class BoardController
  * 
- * The slider puzzle board controller, singleton.
+ * The slider puzzle board controller, a singleton.
  *
  */
 function BoardController() {}
@@ -25,20 +25,65 @@ BoardController.difficulty = 45;
 
 
 /**
+ * Initializes the user controls.
+ */
+BoardController.initControls = function() {
+    d3.select("#width").on("change", function() {
+        BoardController.width = this.value;
+        d3.select("#widthValue").html(BoardController.width);
+        BoardController.resetBoard();
+        })
+        .attr("value", BoardController.width);
+    d3.select("#widthValue").html(BoardController.width);
+
+    d3.select("#difficulty").on("change", function() {
+        BoardController.difficulty = this.value;
+        d3.select("#difficultyValue").html(BoardController.difficulty);
+        BoardController.resetBoard();
+        })
+        .attr("value", BoardController.difficulty);
+    d3.select("#difficultyValue").html(BoardController.difficulty);
+}
+
+
+BoardController.reportThinking = function() {
+    d3.select(".controls").classed("thinking", true);
+}
+
+BoardController.reportNotThinking = function() {
+    d3.select(".controls").classed("thinking", false);
+}
+
+
+
+/**
  * BoardController.resetBoard()
  *
  * Re-initializes the game board with a newly shuffled tile configuration.
  */
 BoardController.resetBoard = function() {
-    BoardModel.state = new BoardState(BoardController.width);
-    BoardModel.state = BoardModel.state.smartShuffle(BoardController.difficulty);
-    BoardModel.state.dump();
 
-    BoardView.renderState(BoardModel.state);
+    BoardController.reportThinking();
+
+    setTimeout(function() {
+        BoardModel.state = new BoardState(BoardController.width);
+        BoardModel.state = BoardModel.state.smartShuffle(BoardController.difficulty);
+        BoardModel.state.dump();
+
+        BoardModel.userStepCount = 0;
+
+        BoardView.renderState(BoardModel.state, 400);
+
+        BoardController.reportNotThinking();
+
+        d3.select("#results").selectAll("p").remove();
+    }, 20);
+
 };
 
+
 /**
- * BoardController.showHint
+ * BoardController.showHint()
  *
  * Animates a hint showing a move that leads toward the known solution.
  */
@@ -74,6 +119,7 @@ BoardController.solveBoard = function() {
             BoardView.renderState(BoardModel.state, 50);
 
             setTimeout(function() {
+                 // Solve the next step in 40ms.
                  solveRestOfBoard();
             }, 40);
         }
@@ -100,5 +146,17 @@ BoardController.userMoveTile = function(index) {
     BoardModel.state = newState;
     BoardModel.state.dump();
     BoardView.renderState( BoardModel.state);
+
+    BoardModel.userStepCount++;
+
+    if (BoardModel.state.isSolved()) {
+        var results = d3.select("#results");
+        
+        results.append("p")
+            .html("Congratulations!");
+        
+        results.append("p")
+            .html("You completed the puzzle in <span>" + BoardModel.userStepCount + ((BoardModel.userStepCount > 1) ? " steps." : " step."));
+    }
 }
 

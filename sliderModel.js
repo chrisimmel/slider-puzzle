@@ -3,7 +3,7 @@
 /*
  * Class BoardModel
  * 
- * The slider puzzle board model, singleton.
+ * The slider puzzle board model, a singleton.
  *
  */
 function BoardModel() {}
@@ -12,6 +12,11 @@ function BoardModel() {}
  * The current board state.
  */
 BoardModel.state = null;
+
+/**
+ * The count of user steps taken in the current configuration.
+ */
+BoardModel.userStepCount = 0;
 
 
 
@@ -505,6 +510,8 @@ BoardState.prototype.smartShuffle= function(difficulty) {
     // Record the starting state as having no prior state.
     visitedStates[startingState.signature()] = "start";
 
+    var bestSoFar = null;
+
     // Process candidates as long was we have some...
     while (candidates.length) {
         // A simple pop would pull off the best candidate...
@@ -537,8 +544,9 @@ BoardState.prototype.smartShuffle= function(difficulty) {
                 var nowMs = new Date().getTime();
 
 	            // Is this a solution?  Or have we timed-out?
-	            if (nextDistanceFromSolution >= difficulty
-	                || nowMs > timeoutMs) {
+	            if ((nextDistanceFromSolution >= difficulty
+	                || nowMs > timeoutMs)
+	                && nextDistanceFromSolution != 0) {
 
 	                // If so, we're done!
 	                var computeTimeMs = nowMs - startTimeMs;
@@ -562,11 +570,15 @@ BoardState.prototype.smartShuffle= function(difficulty) {
 	                return shuffleSteps[0];
 	            }
                 else {
-                    // If not a solution, add this state to the queue to be considered later.
+                    // If not a satisfactory state, add it to the queue to be considered later.
                     console.log("Adding to candidates: " + nextSig);
                     //candidates.push(next);
                     binaryInsert(next, candidates, function(c) { return c.getDistanceFromSolution(); });
                     numCandidates++;
+
+                    if (!bestSoFar && Math.random() > 0.5 /*|| nextDistanceFromSolution > bestSoFar.getDistanceFromSolution()*/) {
+                        bestSoFar = next;
+                    }
 	            }
 	        }
 	        else {
@@ -576,7 +588,8 @@ BoardState.prototype.smartShuffle= function(difficulty) {
     }
 
     // The search space has been exhausted without finding a solution.
-    return this;
+    console.log("Exhausted search space.");
+    return bestSoFar || this;
 };
 
 
