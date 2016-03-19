@@ -7,27 +7,15 @@ body {
     margin-left: 50%;
 }
 
-/*
-@media (orientation: landscape) {
-    body {
-        margin-top: 5%;
-        margin-left: 20%;
-    }
-}
-
-@media (orientation: portrait) {
-    body {
-        margin-top: 5%;
-    }
-}
-*/
-
 div.controls {
     font: 14px sans-serif;
     margin-bottom: 26px;
     float: left;
 }
 
+/*
+ * Wide-screen layout.
+ */
 @media (min-width: 751px) {
     div.page {
         margin-left: -300px;
@@ -44,6 +32,9 @@ div.controls {
     }
 }
 
+/*
+ * Narrow-screen layout.
+ */
 @media (max-width: 750px) {
     div.page {
         margin-left: -200px;
@@ -51,6 +42,7 @@ div.controls {
     div.controls {
         width: 400px;
         height: 90px;
+        padding-left: 16px;
     }
     div.buttons {
         height: 44px;
