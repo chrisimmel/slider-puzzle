@@ -19,7 +19,7 @@ I don't know).
 * Button to start over with a freshly generated board state.
 
 * Tile coloration based on distance from "home position".  A tile that is where it belongs is bright green.
-A tile that is maximally distant from its home position is bright red.  Intermediate positions get inermediate
+A tile that is maximally distant from its home position is bright red.  Intermediate positions get intermediate
 colors.
 
 Have fun, and let me know what you think!
