@@ -4,18 +4,66 @@
 
 body {
     margin-top: 5%;
-    margin-left: 20%;
+    margin-left: 50%;
 }
 
+/*
+@media (orientation: landscape) {
+    body {
+        margin-top: 5%;
+        margin-left: 20%;
+    }
+}
+
+@media (orientation: portrait) {
+    body {
+        margin-top: 5%;
+    }
+}
+*/
+
 div.controls {
-    width: 200px;
-    float: left;
     font: 14px sans-serif;
-    margin-bottom: 40px;
+    margin-bottom: 26px;
+    float: left;
+}
+
+@media (min-width: 751px) {
+    div.page {
+        margin-left: -300px;
+    }
+    div.controls {
+        width: 200px;
+    }
+    div.slider {
+        margin-top: 20px;
+    }
+    div.controls.thinking div.spinner.thinking {
+        margin-top: 50px;
+        margin-left: 60px;
+    }
+}
+
+@media (max-width: 750px) {
+    div.page {
+        margin-left: -200px;
+    }
+    div.controls {
+        width: 400px;
+        height: 90px;
+    }
+    div.buttons {
+        height: 44px;
+    }
+    div.controls.thinking div.spinner.thinking {
+        margin-top: 12px;
+    }
 }
 
 div.boardFrame {
     float: left;
+    height: 400px;
+    width: 400px;
 }
 
 div.results {
@@ -30,28 +78,32 @@ div.results {
 div.sliders {
     margin-left: 10px;
 }
+div.slider {
+    float: left;
+    margin-right: 30px;
+}
 
 button {
     margin: 10px;
     width: 100px;
     height: 24px;
     font-size: 14px;
+    background: #ccc;
+    border: none;
 }
 button:hover {
     background: #ddd;
 }
 
 label {
-    clear: both;
+    /*clear: both;*/
     display: block;
-    margin-top: 20px;
     float: left;
     margin-right: 6px;
 }
 .paramValue {
     color: #666;
     float: left;
-    margin-top: 20px;
 }
 input {
     margin-top: 4px;
@@ -67,7 +119,7 @@ div.spinner.thinking {
 }
 div.controls.thinking div.spinner.thinking {
     display: block;
-    margin-top: 143px;
+    float: left;
 }
 .spinner {
     background: url(spinner.gif);
