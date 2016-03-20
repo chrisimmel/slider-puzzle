@@ -19,6 +19,40 @@ BoardModel.state = null;
 BoardModel.userStepCount = 0;
 
 
+/**
+ * Computes the maximal possible Manhattan complexity for a given board size.
+ */
+BoardModel.getMaximalManhattanComplexity = function(width) {
+    var complexityTotal = 0;
+    var halfWidth = width / 2 - 1;
+    var complexityThis = (width - 1) * 2;
+
+    for (var x = 0; x < width; x++) {
+        for (var y = 0; y < width; y++) {
+            if (x != width - 1 || y != width - 1) {
+                complexityTotal += complexityThis;
+            }
+
+            if (y < halfWidth) {
+                complexityThis--;
+            }
+            else if (y > halfWidth && y < width - 1) {
+                complexityThis++;
+            }
+        }
+
+        if (x < halfWidth) {
+            complexityThis--;
+        }
+        else if (x > halfWidth && x < width - 1) {
+            complexityThis++;
+        }
+    }
+
+    return complexityTotal;
+}
+
+
 
 /**
  * Class Tile
@@ -578,11 +612,11 @@ BoardState.prototype.smartShuffle= function(difficulty) {
                     binaryInsert(next, candidates, function(c) { return c.getDistanceFromSolution(); });
                     numCandidates++;
 
-                    if (!bestSoFar && Math.random() > 0.5 /*|| nextDistanceFromSolution > bestSoFar.getDistanceFromSolution()*/) {
+                    if (!bestSoFar || Math.random() > 0.5 || nextDistanceFromSolution > bestSoFar.getDistanceFromSolution()) {
                         bestSoFar = next;
                     }
-	            }
-	        }
+                }
+            }
 	        else {
 	            console.log("Already visited state: " + nextSig);
 	        }
@@ -746,5 +780,3 @@ BoardState.findSolution = function(startingState) {
     // The search space has been exhausted without finding a solution.
     return null;
 };
-
-

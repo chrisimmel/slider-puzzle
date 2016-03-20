@@ -24,6 +24,13 @@ BoardController.width = 4;
  */
 BoardController.difficulty = 45;
 
+/**
+ * BoardController.maxDifficulty
+ *
+ * The maximum possible "difficulty" at the current board width.
+ */
+BoardController.maxDifficulty = BoardModel.getMaximalManhattanComplexity(BoardController.width);
+
 
 /**
  * Initializes the user controls.
@@ -32,6 +39,13 @@ BoardController.initControls = function() {
     d3.select("#width").on("change", function() {
             BoardController.width = this.value;
             d3.select("#widthValue").html(BoardController.width);
+
+            BoardController.maxDifficulty = BoardModel.getMaximalManhattanComplexity(BoardController.width);
+            BoardController.difficulty = Math.min(BoardController.difficulty, BoardController.maxDifficulty);
+            d3.select("#difficulty").attr("value", BoardController.difficulty);
+            d3.select("#difficulty").attr("max", BoardController.maxDifficulty);
+            d3.select("#difficultyValue").html(BoardController.difficulty)
+            
             BoardController.resetBoard();
         })
         .attr("value", BoardController.width);
@@ -91,7 +105,7 @@ BoardController.resetBoard = function() {
         BoardModel.userStepCount = 0;
 
         // Render the new, shuffled state.
-        BoardView.renderState(BoardModel.state, 400);
+        BoardView.renderState(BoardModel.state, 500);
 
         // Hide the GIF spinner.
         BoardController.reportNotThinking();
