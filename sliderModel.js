@@ -612,7 +612,7 @@ BoardState.prototype.smartShuffle= function(difficulty) {
                     binaryInsert(next, candidates, function(c) { return c.getDistanceFromSolution(); });
                     numCandidates++;
 
-                    if (!bestSoFar || Math.random() > 0.5 || nextDistanceFromSolution > bestSoFar.getDistanceFromSolution()) {
+                    if (!bestSoFar || /*Math.random() > 0.5 ||*/ nextDistanceFromSolution > bestSoFar.getDistanceFromSolution()) {
                         bestSoFar = next;
                     }
                 }
