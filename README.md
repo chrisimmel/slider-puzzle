@@ -22,6 +22,8 @@ I don't know).
 A tile that is maximally distant from its home position is bright red.  Intermediate positions get intermediate
 colors.
 
+Try it out at:  http://luminifera.net/slider/
+
 Have fun, and let me know what you think!
 
 Chris Immel
