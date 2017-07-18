@@ -12,7 +12,7 @@ function binaryInsert(newElem, elements, metric) {
 
     // Do a binary search to find the right insertion point.
     while (minIndex <= maxIndex && insertIndex < 0) {
-        var currentIndex = (minIndex + maxIndex) / 2 | 0;
+        var currentIndex = Math.floor((minIndex + maxIndex) / 2);
         var currentElement = elements[currentIndex];
         var currentMetric = metric(currentElement);
 
