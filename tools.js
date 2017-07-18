@@ -1,7 +1,7 @@
 
 /**
- * Inserts a given element into an array using a binary search based on a given ordering
- * metric.  Order is ascending based on the metric.
+ * Destructively inserts a given element into an array using a binary search based on a
+ * given ordering metric.  Order is ascending based on the metric.
  */
 function binaryInsert(newElem, elements, metric) {
     var newMetric = metric(newElem);
@@ -17,18 +17,23 @@ function binaryInsert(newElem, elements, metric) {
         var currentMetric = metric(currentElement);
 
         if (currentMetric < newMetric) {
+            // Insertion point is to the right.
             minIndex = currentIndex + 1;
         }
         else if (currentMetric > newMetric) {
+            // Insertion point is to the left.
             maxIndex = currentIndex - 1;
         }
         else {
+            // Insertion point is here!
             insertIndex = currentIndex;
         }
     }
     if (insertIndex == -1) {
-        insertIndex = ~maxIndex;
+        // No interim position found.  Insert at end.
+        insertIndex = maxIndex + 1;
     }
-        
-    elements.splice(Math.abs(insertIndex), 0, newElem);
+
+    // Do the insertion.
+    elements.splice(insertIndex, 0, newElem);
 }
